@@ -1,0 +1,520 @@
+.app-shell {
+  display: grid;
+  grid-template-columns: 304px minmax(0, 1fr);
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(15, 118, 110, 0.13), transparent 28%),
+    radial-gradient(circle at 86% 16%, rgba(37, 99, 235, 0.1), transparent 26%),
+    linear-gradient(180deg, #f8fbff 0%, #eef4f8 100%),
+    var(--bg);
+  color: var(--text);
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  height: 100vh;
+  padding: 18px 16px;
+  border-right: 1px solid rgba(148, 163, 184, 0.24);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.9)),
+    var(--panel);
+  box-shadow: 18px 0 48px rgba(15, 23, 42, 0.07);
+  backdrop-filter: blur(16px);
+}
+
+.public-content { min-height: 100vh; }
+.driver-content{min-height:100vh;padding:clamp(14px,3vw,34px);background:radial-gradient(circle at 10% 0,#0f766e18,transparent 30%),linear-gradient(180deg,#f7fbfb,#edf5f4)}
+
+.logout {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  margin-top: auto;
+  padding: 9px 11px;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fff;
+  color: #b91c1c;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.logout .nav-icon { background: #fee2e2; color: #b91c1c; }
+.icon-logout::before { width: 14px; height: 14px; border: 2px solid currentColor; border-right: 0; border-radius: 3px 0 0 3px; }
+.icon-logout::after { width: 10px; height: 2px; background: currentColor; box-shadow: 4px -3px 0 -1px currentColor, 4px 3px 0 -1px currentColor; transform: translateX(5px); }
+.icon-settings::before { width: 17px; height: 17px; border: 4px dotted currentColor; border-radius: 50%; }
+.icon-settings::after { width: 6px; height: 6px; border: 2px solid currentColor; border-radius: 50%; }
+
+.ddtrack-logo { position: relative; display: block; width: 50px; height: 50px; flex: 0 0 50px; border: 5px solid #0ad4c7; border-radius: 50% 50% 50% 5px; background: #087b74; box-shadow: 0 13px 25px #007c7633; transform: rotate(-45deg); }
+.ddtrack-logo i { position: absolute; inset: 11px; border: 5px solid #003f47; border-radius: 50%; background: #12c5bb; }
+.sidebar-user { display: grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:10px; padding:11px; border:1px solid #dce9e8; border-radius:12px; background:#fff; }
+.sidebar-user>span { display:grid; width:38px; height:38px; place-items:center; border-radius:10px; background:linear-gradient(135deg,#007c76,#0bc2b6); color:#fff; font-weight:900; }
+.sidebar-user strong,.sidebar-user small { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.sidebar-user strong { color:#163f43; font-size:.8rem; }
+.sidebar-user small { margin-top:3px; color:#7b9294; font-size:.68rem; }
+.sidebar-user>i { width:8px; height:8px; border-radius:50%; background:#10b981; box-shadow:0 0 0 4px #10b98118; }
+.nav-title { padding:7px 10px 4px; color:#94a3b8; font-size:.65rem; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 76px;
+  padding: 12px;
+  border: 1px solid rgba(15, 118, 110, 0.15);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(37, 99, 235, 0.05)),
+    #ffffff;
+}
+
+.platform-logo {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  flex: 0 0 50px;
+  border-radius: 8px;
+  background:
+    linear-gradient(145deg, #0f766e 0%, #0e8f87 48%, #2563eb 100%);
+  box-shadow: 0 16px 32px rgba(15, 118, 110, 0.26);
+  overflow: hidden;
+}
+
+.platform-logo::before {
+  width: 27px;
+  height: 17px;
+  border: 2px solid #ffffff;
+  border-radius: 5px 5px 4px 4px;
+  content: "";
+}
+
+.platform-logo::after {
+  position: absolute;
+  bottom: 14px;
+  width: 22px;
+  height: 3px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: -8px 8px 0 -1px #ffffff, 8px 8px 0 -1px #ffffff;
+  content: "";
+}
+
+.platform-logo i {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  width: 5px;
+  height: 5px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 13px 0 0 rgba(255, 255, 255, 0.9);
+}
+
+.brand strong,
+.brand small,
+nav a {
+  display: block;
+}
+
+.brand strong {
+  font-size: 1.12rem;
+  letter-spacing: 0;
+}
+
+.brand small {
+  margin-top: 4px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.platform-summary {
+  display: grid;
+  gap: 4px;
+  padding: 14px;
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(15, 118, 110, 0.95), rgba(17, 94, 89, 0.9)),
+    var(--primary);
+  color: #ffffff;
+  box-shadow: 0 18px 36px rgba(15, 118, 110, 0.18);
+}
+
+.platform-summary span {
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.platform-summary strong {
+  margin-top: 4px;
+  font-size: 1.02rem;
+}
+
+.platform-summary small {
+  color: rgba(255, 255, 255, 0.76);
+  font-weight: 700;
+}
+
+nav {
+  display: grid;
+  gap: 5px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+nav a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 44px;
+  padding: 8px 11px;
+  border-radius: 8px;
+  color: #475569;
+  font-weight: 800;
+  text-decoration: none;
+  transition: background 0.16s ease, color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.nav-icon {
+  position: relative;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  place-items: center;
+  border-radius: 8px;
+  background: #eef4f7;
+  color: #64748b;
+}
+
+.nav-icon::before,
+.nav-icon::after {
+  position: absolute;
+  box-sizing: border-box;
+  content: "";
+}
+
+.nav-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+nav a.active,
+nav a:hover {
+  background: #ffffff;
+  color: var(--primary-dark);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+  transform: translateX(2px);
+}
+
+.nav-icon,
+nav a.active .nav-icon,
+nav a:hover .nav-icon {
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+nav a.active .nav-icon,
+nav a:hover .nav-icon {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.icon-dashboard::before {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  background:
+    linear-gradient(currentColor 0 0) left top / 8px 8px no-repeat,
+    linear-gradient(currentColor 0 0) right top / 8px 11px no-repeat,
+    linear-gradient(currentColor 0 0) left bottom / 8px 7px no-repeat,
+    linear-gradient(currentColor 0 0) right bottom / 8px 4px no-repeat;
+}
+
+.icon-home::before {
+  width: 15px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-top: 0;
+  border-radius: 2px;
+  transform: translateY(3px);
+}
+
+.icon-home::after {
+  width: 12px;
+  height: 12px;
+  border-left: 2px solid currentColor;
+  border-top: 2px solid currentColor;
+  transform: translateY(-3px) rotate(45deg);
+}
+
+.icon-alert::before,
+.icon-status::before {
+  width: 18px;
+  height: 18px;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+}
+
+.icon-alert::after {
+  width: 3px;
+  height: 10px;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow: 0 12px 0 -1px currentColor;
+}
+
+.icon-bus::before {
+  width: 19px;
+  height: 15px;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+}
+
+.icon-bus::after {
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow: 10px 0 0 currentColor, -5px -6px 0 1px currentColor, 5px -6px 0 1px currentColor;
+  transform: translateY(7px);
+}
+
+.icon-count::before {
+  width: 4px;
+  height: 15px;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow: -7px 5px 0 currentColor, 7px -4px 0 currentColor;
+}
+
+.icon-route::before,
+.icon-trip::before {
+  width: 18px;
+  height: 18px;
+  border: 2px solid currentColor;
+  border-left-color: transparent;
+  border-radius: 999px;
+}
+
+.icon-route::after,
+.icon-trip::after {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow: 10px 10px 0 currentColor;
+  transform: translate(-5px, -5px);
+}
+
+.icon-bell::before {
+  width: 16px;
+  height: 15px;
+  border: 2px solid currentColor;
+  border-bottom: 0;
+  border-radius: 9px 9px 3px 3px;
+}
+
+.icon-bell::after {
+  width: 12px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow: 4px 5px 0 -1px currentColor;
+  transform: translateY(8px);
+}
+
+.icon-pin::before,
+.icon-station::before {
+  width: 15px;
+  height: 15px;
+  border: 2px solid currentColor;
+  border-radius: 999px 999px 999px 2px;
+  transform: rotate(-45deg);
+}
+
+.icon-pin::after,
+.icon-station::after {
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.icon-shield::before {
+  width: 17px;
+  height: 19px;
+  border: 2px solid currentColor;
+  border-radius: 9px 9px 6px 6px;
+  clip-path: polygon(0 0, 100% 0, 86% 78%, 50% 100%, 14% 78%);
+}
+
+.icon-network::before {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow: -8px 8px 0 currentColor, 8px 8px 0 currentColor;
+}
+
+.icon-network::after {
+  width: 18px;
+  height: 12px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  border-left: 2px solid currentColor;
+  transform: translateY(3px);
+}
+
+.icon-status::after {
+  width: 9px;
+  height: 5px;
+  border-bottom: 2px solid currentColor;
+  border-left: 2px solid currentColor;
+  transform: rotate(-45deg);
+}
+
+.icon-tag::before {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-radius: 4px 8px 4px 4px;
+  transform: rotate(45deg);
+}
+
+.icon-tag::after {
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: currentColor;
+  transform: translate(5px, -5px);
+}
+
+.icon-users::before {
+  width: 8px;
+  height: 8px;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  box-shadow: 9px 2px 0 -1px currentColor;
+  transform: translate(-4px, -5px);
+}
+
+.icon-users::after {
+  width: 19px;
+  height: 9px;
+  border: 2px solid currentColor;
+  border-radius: 10px 10px 3px 3px;
+  transform: translateY(7px);
+}
+
+.icon-camera::before {
+  width: 17px;
+  height: 13px;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+}
+
+.icon-camera::after {
+  width: 8px;
+  height: 8px;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+}
+
+.icon-load::before {
+  width: 18px;
+  height: 14px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  border-left: 2px solid currentColor;
+  border-radius: 3px;
+  transform: translateY(3px);
+}
+
+.icon-load::after {
+  width: 14px;
+  height: 8px;
+  border: 2px solid currentColor;
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  transform: translateY(-5px);
+}
+
+.icon-radar::before {
+  width: 20px;
+  height: 20px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 999px;
+  transform: rotate(45deg);
+}
+
+.icon-radar::after {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.icon-login::before {
+  width: 15px;
+  height: 15px;
+  border: 2px solid currentColor;
+  border-left: 0;
+  border-radius: 2px;
+}
+
+.icon-login::after {
+  width: 11px;
+  height: 11px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: translateX(-5px) rotate(45deg);
+}
+
+.content {
+  min-width: 0;
+  padding: 30px;
+}
+
+@media (max-width: 780px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+    padding: 16px;
+  }
+
+  .platform-summary {
+    display: none;
+  }
+
+  nav {
+    grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+    max-height: none;
+  }
+
+  .content {
+    padding: 16px;
+  }
+}

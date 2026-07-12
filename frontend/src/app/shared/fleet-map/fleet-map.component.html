@@ -1,0 +1,13 @@
+<section class="fleet-map">
+  <header>
+    <div><p>Carte GPS précise</p><h2>Véhicules et itinéraires en temps réel</h2></div>
+    <label>Filtrer par ligne
+      <select [value]="selectedLine()" (change)="selectLine($event)">
+        <option value="all">Toutes les lignes</option>
+        @for (line of lines(); track line.number) { <option [value]="line.number">{{ line.number }} · {{ line.name }}</option> }
+      </select>
+    </label>
+  </header>
+  <div #mapContainer class="map-canvas" aria-label="Carte GPS des véhicules"></div>
+  <footer><span><i class="normal"></i>En circulation</span><span><i class="mine"></i>Mon bus</span><span><i class="danger"></i>Surcharge</span><span><i class="route-key"></i>Itinéraire parcouru</span><strong>{{ visibleCount() }} véhicule(s) avec GPS</strong></footer>
+</section>

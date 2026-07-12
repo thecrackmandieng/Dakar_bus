@@ -1,0 +1,74 @@
+<section class="dashboard-hero">
+  <div>
+    <p>Centre de controle</p>
+    <h1>Dashboard Dakar Bus</h1>
+    <span>Suivi temps reel du reseau, statistiques de performance et supervision des operations.</span>
+  </div>
+  <div class="hero-actions" aria-label="Actions rapides">
+    <button type="button" class="ghost" (click)="toggleAlertSound()">{{ soundEnabled() ? 'Son activé' : 'Activer le son' }}</button>
+    <button type="button">Nouvelle alerte</button>
+  </div>
+</section>
+
+<section class="stats-grid" aria-label="Statistiques de la plateforme">
+  @for (stat of stats(); track stat.label) {
+    <article class="stat-card tone-{{ stat.tone }}">
+      <div class="stat-icon" aria-hidden="true"></div>
+      <span>{{ stat.label }}</span>
+      <strong>{{ stat.value }}</strong>
+      <small>{{ stat.trend }}</small>
+    </article>
+  }
+</section>
+
+<section class="counter-admin">
+  <header class="counter-head"><div><p>Capteurs infrarouges</p><h2>Compteurs passagers</h2><span>Consultez l’occupation et initialisez le compteur du véhicule connecté.</span></div><div class="counter-tools"><label><span>Rechercher</span><input type="search" [value]="counterSearch()" (input)="searchCounters($event)" placeholder="Bus, ligne, immatriculation"></label><span class="counter-live"><i></i>Temps réel</span></div></header>
+  @if (counterMessage()) { <p class="counter-message {{ counterMessageTone() }}" role="status">{{ counterMessage() }}</p> }
+  <div class="counter-bus-grid">
+    @for (vehicle of visibleCounterCards(); track vehicle.id) {
+      <article class="counter-bus-card {{ vehicle.status.tone }}">
+        <div class="counter-card-top"><span class="bus-symbol" aria-hidden="true"><i></i></span><div><small>Véhicule</small><h3>{{ vehicle.busNumber }}</h3><span>{{ vehicle.registration }}</span></div><b>{{ vehicle.status.label }}</b></div>
+        <div class="counter-line"><span>Ligne</span><strong>{{ vehicle.lineLabel }}</strong></div>
+        <div class="occupancy-row"><div><span>Occupation actuelle</span><strong>{{ vehicle.passengers }}<small>/ {{ vehicle.capacity }}</small></strong></div><b>{{ vehicle.percentage }} %</b></div>
+        <div class="counter-gauge" aria-hidden="true"><i [style.width.%]="vehicle.gaugeWidth"></i></div>
+        <button type="button" class="reset-button" (click)="resetCounter(vehicle.id)" [disabled]="vehicle.resetDisabled"><i aria-hidden="true">↻</i><span>{{ vehicle.resetLabel }}</span></button>
+      </article>
+    }
+    @if (!visibleCounterCards().length) { <div class="counter-empty">Aucun compteur ne correspond à la recherche.</div> }
+  </div>
+  @if (filteredCounterCards().length > counterPageSize) { <footer class="counter-pagination"><span>{{ filteredCounterCards().length }} bus</span><div><button type="button" class="secondary" (click)="previousCounterPage()" [disabled]="counterPage() === 1">←</button><b>Page {{ counterPage() }} / {{ counterTotalPages() }}</b><button type="button" class="secondary" (click)="nextCounterPage()" [disabled]="counterPage() === counterTotalPages()">→</button></div></footer> }
+</section>
+
+<section class="dashboard-grid">
+  <app-fleet-map [vehicles]="fleet.vehicles()" />
+
+  <aside class="ops-panel">
+    <div class="panel-head">
+      <div>
+        <p>Operations</p>
+        <h2>Etat plateforme</h2>
+      </div>
+    </div>
+
+    <div class="ops-list">
+      @for (item of operations(); track item.label) {
+        <article>
+          <span>{{ item.label }}</span>
+          <strong>{{ item.value }}</strong>
+          <small>{{ item.detail }}</small>
+        </article>
+      }
+    </div>
+
+    <div class="alert-feed">
+      <h3>Alertes recentes</h3>
+      @for (vehicle of overloadAlerts(); track vehicle.id) {
+        <article class="live-overload">
+          <span aria-hidden="true"></span>
+          <div><strong>Surcharge détectée · Bus {{ vehicle.busNumber }}</strong><small>Ligne {{ vehicle.lineNumber }} · {{ vehicle.passengers }}/{{ vehicle.capacity }} passagers</small><em>À l'instant</em></div>
+        </article>
+      }
+      @if (!overloadAlerts().length) { <div class="no-alert">Aucune surcharge détectée.</div> }
+    </div>
+  </aside>
+</section>

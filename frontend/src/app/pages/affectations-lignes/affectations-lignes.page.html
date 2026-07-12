@@ -1,0 +1,11 @@
+<header class="assignment-head"><p>Exploitation du réseau</p><h1>Affectation des bus aux lignes</h1><span>Choisissez la ligne active de chaque véhicule indépendamment de son module GPS.</span></header>
+<section class="assignment-layout">
+  <form [formGroup]="form" (ngSubmit)="assign()">
+    <div><p>Nouvelle affectation</p><h2>Bus et ligne active</h2></div>
+    <label>Véhicule<select formControlName="idBus"><option value="">Sélectionner un bus</option>@for(bus of buses();track bus.idBus){<option [value]="bus.idBus">{{bus.numeroBus}} · {{bus.immatriculation}}</option>}</select></label>
+    <label>Ligne<select formControlName="idLigne"><option value="">Sélectionner une ligne</option>@for(ligne of lignes();track ligne.idLigne){<option [value]="ligne.idLigne">{{ligne.numeroLigne}} · {{ligne.nomLigne}}</option>}</select></label>
+    <button type="submit" [disabled]="loading() || form.invalid">Affecter le bus</button>
+    @if(error()){<p class="message error-message" role="alert">{{error()}}</p>}@if(success()){<p class="message success-message" role="status">{{success()}}</p>}
+  </form>
+  <section class="active-list"><div><p>Affectations actives</p><h2>Bus actuellement en ligne</h2></div>@if(!assignments().length&&!loading()){<div class="empty">Aucune affectation active.</div>}@for(assignment of assignments();track assignment.idTrajet){<article><span>{{assignment.numeroLigne}}</span><div><strong>{{assignment.numeroBus}} · {{assignment.immatriculation}}</strong><small>{{assignment.nomLigne}}</small><b>Depuis {{assignment.dateDepart}}</b></div><button type="button" class="secondary" (click)="selectAssignment(assignment)">Changer</button></article>}</section>
+</section>

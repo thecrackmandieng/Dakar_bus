@@ -1,0 +1,167 @@
+<section class="page-title">
+  <div>
+    <p>Module CRUD</p>
+    <h1>VueBusTempsReel</h1>
+    <span>Gestion de la table vue_bus_temps_reel</span>
+  </div>
+  <button type="button" (click)="openCreate()">Nouvel element</button>
+</section>
+
+@if (error) {
+  <div class="error">{{ error }}</div>
+}
+
+<section class="table-card">
+  <div class="table-head">
+    <div>
+      <h2>Donnees</h2>
+      <p>{{ items.length }} element(s)</p>
+    </div>
+    <button type="button" class="ghost" (click)="load()">Actualiser</button>
+  </div>
+  @if (loading) {
+    <div class="loading-state">Chargement...</div>
+  } @else {
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+          <th>Numero Bus</th>
+          <th>Immatriculation</th>
+          <th>Capacite Max</th>
+          <th>Numero Ligne</th>
+          <th>Nom Ligne</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Vitesse</th>
+          <th>Date Position</th>
+          <th>Nombre Passagers</th>
+          <th>Etat Remplissage</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of items; track item.idBus) {
+            <tr>
+          <td>{{ item.numeroBus }}</td>
+          <td>{{ item.immatriculation }}</td>
+          <td>{{ item.capaciteMax }}</td>
+          <td>{{ item.numeroLigne }}</td>
+          <td>{{ item.nomLigne }}</td>
+          <td>{{ item.latitude }}</td>
+          <td>{{ item.longitude }}</td>
+          <td>{{ item.vitesse }}</td>
+          <td>{{ item.datePosition }}</td>
+          <td>{{ item.nombrePassagers }}</td>
+          <td>{{ item.etatRemplissage }}</td>
+              <td class="row-actions">
+                <button type="button" (click)="edit(item)">Editer</button>
+                <button type="button" class="danger" (click)="askRemove(item)">Supprimer</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
+
+@if (formOpen) {
+  <div class="modal-backdrop" role="presentation" (click)="cancel()"></div>
+  <section class="modal-panel" role="dialog" aria-modal="true" aria-label="Formulaire VueBusTempsReel">
+    <div class="modal-head">
+      <div>
+        <p>{{ editingId === null ? 'Creation' : 'Modification' }}</p>
+        <h2>{{ editingId === null ? 'Nouvel element' : 'Modifier element' }}</h2>
+      </div>
+      <button type="button" class="icon-button" aria-label="Fermer" (click)="cancel()">x</button>
+    </div>
+
+    <form (ngSubmit)="save()">
+
+      <label>
+        Numero Bus
+        <input name="numeroBus" type="text" [(ngModel)]="form['numeroBus']">
+      </label>
+
+      <label>
+        Immatriculation
+        <input name="immatriculation" type="text" [(ngModel)]="form['immatriculation']">
+      </label>
+
+      <label>
+        Capacite Max
+        <input name="capaciteMax" type="number" [(ngModel)]="form['capaciteMax']">
+      </label>
+
+      <label>
+        Numero Ligne
+        <input name="numeroLigne" type="text" [(ngModel)]="form['numeroLigne']">
+      </label>
+
+      <label>
+        Nom Ligne
+        <input name="nomLigne" type="text" [(ngModel)]="form['nomLigne']">
+      </label>
+
+      <label>
+        Latitude
+        <input name="latitude" type="number" [(ngModel)]="form['latitude']">
+      </label>
+
+      <label>
+        Longitude
+        <input name="longitude" type="number" [(ngModel)]="form['longitude']">
+      </label>
+
+      <label>
+        Vitesse
+        <input name="vitesse" type="number" [(ngModel)]="form['vitesse']">
+      </label>
+
+      <label>
+        Date Position
+        <input name="datePosition" type="datetime-local" [(ngModel)]="form['datePosition']">
+      </label>
+
+      <label>
+        Nombre Passagers
+        <input name="nombrePassagers" type="number" [(ngModel)]="form['nombrePassagers']">
+      </label>
+
+      <label>
+        Etat Remplissage
+        <input name="etatRemplissage" type="text" [(ngModel)]="form['etatRemplissage']">
+      </label>
+      <div class="form-actions">
+        <button type="submit" [disabled]="loading">{{ editingId === null ? 'Creer' : 'Mettre a jour' }}</button>
+        <button type="button" class="ghost" (click)="cancel()">Annuler</button>
+      </div>
+    </form>
+  </section>
+}
+
+@if (confirmOpen) {
+  <div class="modal-backdrop" role="presentation" (click)="closeConfirm()"></div>
+  <section class="modal-panel small" role="dialog" aria-modal="true" aria-label="Confirmation suppression">
+    <div class="confirm-icon danger-icon">!</div>
+    <h2>Confirmer la suppression</h2>
+    <p>Cette action supprimera definitivement cet element.</p>
+    <div class="modal-actions">
+      <button type="button" class="ghost" (click)="closeConfirm()">Annuler</button>
+      <button type="button" class="danger" [disabled]="loading" (click)="confirmRemove()">Supprimer</button>
+    </div>
+  </section>
+}
+
+@if (successOpen) {
+  <div class="modal-backdrop success-backdrop" role="presentation" (click)="closeSuccess()"></div>
+  <section class="modal-panel small success-panel" role="dialog" aria-modal="true" aria-label="Succes">
+    <div class="confirm-icon success-icon">OK</div>
+    <h2>Operation reussie</h2>
+    <p>{{ successMessage }}</p>
+    <div class="modal-actions">
+      <button type="button" (click)="closeSuccess()">Continuer</button>
+    </div>
+  </section>
+}

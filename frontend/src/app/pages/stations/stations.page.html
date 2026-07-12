@@ -1,0 +1,132 @@
+<section class="page-title">
+  <div>
+    <p>Module CRUD</p>
+    <h1>Stations</h1>
+    <span>Gestion de la table stations</span>
+  </div>
+  <button type="button" (click)="openCreate()">Nouvel element</button>
+</section>
+
+@if (error) {
+  <div class="error">{{ error }}</div>
+}
+
+<section class="table-card">
+  <div class="table-head">
+    <div>
+      <h2>Donnees</h2>
+      <p>{{ items.length }} element(s)</p>
+    </div>
+    <button type="button" class="ghost" (click)="load()">Actualiser</button>
+  </div>
+  @if (loading) {
+    <div class="loading-state">Chargement...</div>
+  } @else {
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+          <th>Nom Station</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Adresse</th>
+          <th>Actif</th>
+          <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of items; track item.idStation) {
+            <tr>
+          <td>{{ item.nomStation }}</td>
+          <td>{{ item.latitude }}</td>
+          <td>{{ item.longitude }}</td>
+          <td>{{ item.adresse }}</td>
+          <td>{{ item.actif }}</td>
+          <td>{{ item.createdAt }}</td>
+              <td class="row-actions">
+                <button type="button" (click)="edit(item)">Editer</button>
+                <button type="button" class="danger" (click)="askRemove(item)">Supprimer</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
+
+@if (formOpen) {
+  <div class="modal-backdrop" role="presentation" (click)="cancel()"></div>
+  <section class="modal-panel" role="dialog" aria-modal="true" aria-label="Formulaire Stations">
+    <div class="modal-head">
+      <div>
+        <p>{{ editingId === null ? 'Creation' : 'Modification' }}</p>
+        <h2>{{ editingId === null ? 'Nouvel element' : 'Modifier element' }}</h2>
+      </div>
+      <button type="button" class="icon-button" aria-label="Fermer" (click)="cancel()">x</button>
+    </div>
+
+    <form (ngSubmit)="save()">
+
+      <label>
+        Nom Station
+        <input name="nomStation" type="text" [(ngModel)]="form['nomStation']">
+      </label>
+
+      <label>
+        Latitude
+        <input name="latitude" type="number" [(ngModel)]="form['latitude']">
+      </label>
+
+      <label>
+        Longitude
+        <input name="longitude" type="number" [(ngModel)]="form['longitude']">
+      </label>
+
+      <label>
+        Adresse
+        <input name="adresse" type="text" [(ngModel)]="form['adresse']">
+      </label>
+
+      <label>
+        Actif
+        <input name="actif" type="text" [(ngModel)]="form['actif']">
+      </label>
+
+      <label>
+        Created At
+        <input name="createdAt" type="datetime-local" [(ngModel)]="form['createdAt']">
+      </label>
+      <div class="form-actions">
+        <button type="submit" [disabled]="loading">{{ editingId === null ? 'Creer' : 'Mettre a jour' }}</button>
+        <button type="button" class="ghost" (click)="cancel()">Annuler</button>
+      </div>
+    </form>
+  </section>
+}
+
+@if (confirmOpen) {
+  <div class="modal-backdrop" role="presentation" (click)="closeConfirm()"></div>
+  <section class="modal-panel small" role="dialog" aria-modal="true" aria-label="Confirmation suppression">
+    <div class="confirm-icon danger-icon">!</div>
+    <h2>Confirmer la suppression</h2>
+    <p>Cette action supprimera definitivement cet element.</p>
+    <div class="modal-actions">
+      <button type="button" class="ghost" (click)="closeConfirm()">Annuler</button>
+      <button type="button" class="danger" [disabled]="loading" (click)="confirmRemove()">Supprimer</button>
+    </div>
+  </section>
+}
+
+@if (successOpen) {
+  <div class="modal-backdrop success-backdrop" role="presentation" (click)="closeSuccess()"></div>
+  <section class="modal-panel small success-panel" role="dialog" aria-modal="true" aria-label="Succes">
+    <div class="confirm-icon success-icon">OK</div>
+    <h2>Operation reussie</h2>
+    <p>{{ successMessage }}</p>
+    <div class="modal-actions">
+      <button type="button" (click)="closeSuccess()">Continuer</button>
+    </div>
+  </section>
+}

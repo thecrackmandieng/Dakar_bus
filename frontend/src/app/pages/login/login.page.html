@@ -1,0 +1,67 @@
+<section class="login-layout">
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <div class="route route-one" aria-hidden="true"></div>
+  <div class="route route-two" aria-hidden="true"></div>
+
+  <aside class="login-showcase">
+    <div class="brand-mark" aria-label="DDTrack">
+      <span class="pin"><i></i></span>
+      <div><strong>DD<span>TRACK</span></strong><small>Système intelligent de suivi des Tata · Dakar</small></div>
+    </div>
+    <div class="showcase-copy">
+      <span class="live-pill"><i></i> Réseau connecté en temps réel</span>
+      <h1>La mobilité de Dakar,<br><em>sous contrôle.</em></h1>
+      <p>Suivez les bus, anticipez les surcharges et pilotez chaque ligne depuis une seule plateforme.</p>
+    </div>
+    <div class="feature-row" aria-label="Fonctionnalités principales">
+      <span><i class="gps-icon"></i>GPS temps réel</span>
+      <span><i class="people-icon"></i>Comptage intelligent</span>
+      <span><i class="alert-icon"></i>Alertes instantanées</span>
+    </div>
+  </aside>
+
+  <div class="form-zone">
+    <form class="login-card" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="mobile-brand"><span class="mini-pin"></span><strong>DD<span>TRACK</span></strong></div>
+      <div class="form-heading">
+        <span>Espace sécurisé</span>
+        <h2>Heureux de vous revoir</h2>
+        <p>Connectez-vous pour accéder à votre tableau de bord.</p>
+      </div>
+
+      <div class="access-switch" aria-label="Choisir le type d’accès">
+        <button type="button" [class.active]="form.controls.role.value === 'admin'" (click)="selectRole('admin')">
+          <i class="admin-access" aria-hidden="true"></i>
+          <span><strong>Administrateur</strong><small>Supervision du réseau</small></span>
+        </button>
+        <button type="button" [class.active]="form.controls.role.value === 'chauffeur'" (click)="selectRole('chauffeur')">
+          <i class="driver-access" aria-hidden="true"></i>
+          <span><strong>Chauffeur</strong><small>Mon bus en direct</small></span>
+        </button>
+      </div>
+
+      <label>
+        <span>Identifiant</span>
+        <div class="input-shell user-field">
+          <input formControlName="login" autocomplete="username" [placeholder]="form.controls.role.value === 'admin' ? 'Identifiant administrateur' : 'Identifiant chauffeur'">
+        </div>
+      </label>
+      <label>
+        <span>Mot de passe</span>
+        <div class="input-shell password-field">
+          <input formControlName="password" type="password" autocomplete="current-password" placeholder="Votre mot de passe">
+        </div>
+      </label>
+
+      @if (error()) {
+        <div class="login-error" role="alert"><i>!</i>{{ error() }}</div>
+      }
+
+      <button class="submit-button" type="submit" [disabled]="form.invalid">
+        <span>Se connecter</span><i aria-hidden="true">→</i>
+      </button>
+      <small class="secure-note"><i aria-hidden="true"></i>Connexion sécurisée · DDTrack Dakar</small>
+    </form>
+  </div>
+</section>

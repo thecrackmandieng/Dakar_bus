@@ -1,0 +1,43 @@
+@if (auth.isAuthenticated()) {
+  @if (auth.isDriver()) {
+    <main class="driver-content"><router-outlet></router-outlet></main>
+  } @else {
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="ddtrack-logo" aria-hidden="true"><i></i></span>
+      <div>
+        <strong>DDTrack</strong>
+        <small>Suivi intelligent · Dakar</small>
+      </div>
+    </div>
+    <div class="sidebar-user">
+      <span>{{ auth.user()?.name?.charAt(0)?.toUpperCase() }}</span>
+      <div><strong>{{ auth.user()?.name }}</strong><small>{{ auth.isDriver() ? 'Chauffeur' : 'Administrateur' }}</small></div>
+      <i aria-hidden="true"></i>
+    </div>
+    <div class="platform-summary">
+      <span>Live</span>
+      <strong>Reseau Dakar</strong>
+      <small>Suivi bus, alertes et operations</small>
+    </div>
+    <nav aria-label="Navigation">
+      <small class="nav-title">Navigation</small>
+      @for (link of links; track link.path) {
+        <a [routerLink]="link.path" routerLinkActive="active">
+          <span class="nav-icon icon-{{ link.icon }}" aria-hidden="true"></span>
+          <span class="nav-label">{{ link.label }}</span>
+        </a>
+      }
+    </nav>
+    <button class="logout" type="button" (click)="auth.logout()"><span class="nav-icon icon-logout"></span>Déconnexion</button>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+  }
+} @else {
+  <main class="public-content"><router-outlet></router-outlet></main>
+}

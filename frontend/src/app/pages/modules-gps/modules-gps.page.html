@@ -1,0 +1,16 @@
+<header class="gps-head"><p>Paramètres matériels</p><h1>Modules GPS</h1><span>Ajoutez un boîtier GPS et affectez-le à un véhicule actif.</span></header>
+
+<section class="gps-layout">
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <div><p>{{ editingId() ? 'Modification' : 'Nouveau module' }}</p><h2>{{ editingId() ? 'Modifier le GPS' : 'Ajouter un GPS' }}</h2></div>
+    <label>GPS connecté<select formControlName="identifiantModule"><option value="">Sélectionner un GPS détecté</option>@for(gps of connectedModules();track gps.identifiantModule){<option [value]="gps.identifiantModule">{{gps.identifiantModule}} · {{gps.portSerie}}</option>}@if(editingId() && !connectedModules().length){<option [value]="form.controls.identifiantModule.value">{{form.controls.identifiantModule.value}} · hors ligne</option>}</select></label>
+    @if(!connectedModules().length){<p class="gps-warning">Aucun GPS connecté détecté. Vérifiez le port série et redémarrez le backend.</p>}
+    <label>Nom du module<input formControlName="nomModule" placeholder="Ex. GPS principal BUS-001"></label>
+    <label>Bus affecté<select formControlName="idBus"><option value="">Non affecté</option>@for(bus of buses();track bus.idBus){<option [value]="bus.idBus">{{bus.numeroBus}} · {{bus.immatriculation}}</option>}</select></label>
+    <label class="check"><input type="checkbox" formControlName="actif"><span>Module actif</span></label>
+    <div class="actions"><button type="submit" [disabled]="loading() || form.invalid">{{ editingId() ? 'Enregistrer' : 'Ajouter et affecter' }}</button>@if(editingId()){<button type="button" class="secondary" (click)="cancel()">Annuler</button>}</div>
+    @if(error()){<p class="form-error" role="alert">{{error()}}</p>}@if(success()){<p class="form-success" role="status">{{success()}}</p>}
+  </form>
+
+  <section class="module-list"><div><p>Parc GPS</p><h2>Modules enregistrés</h2></div>@if(!modules().length&&!loading()){<div class="empty">Aucun module GPS enregistré.</div>}@for(module of modules();track module.idModule){<article><span class="gps-status" [class.offline]="!module.actif"></span><div><strong>{{module.nomModule}}</strong><small>{{module.identifiantModule}}</small><b>{{module.numeroBus ? module.numeroBus + ' · ' + module.immatriculation : 'Non affecté'}}</b><small>{{module.numeroLigne ? 'Ligne ' + module.numeroLigne + ' · ' + module.nomLigne : 'Ligne non affectée'}}</small></div><button type="button" class="secondary" (click)="edit(module)">Modifier</button><button type="button" class="danger" (click)="remove(module)" [disabled]="loading()">Supprimer</button></article>}</section>
+</section>

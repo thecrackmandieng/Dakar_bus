@@ -1,0 +1,2 @@
+<header><p>Administration</p><h1>Paramètres</h1><span>Configuration centralisée de la plateforme et gestion dynamique des privilèges.</span></header>
+<section class="settings-grid">@for(module of modules;track module.route){<a [routerLink]="module.route"><i aria-hidden="true">⚙</i><div><strong>{{module.name}}</strong><span>{{module.description}}</span></div><b>→</b></a>}</section>

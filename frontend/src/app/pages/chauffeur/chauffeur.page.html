@@ -1,0 +1,36 @@
+<section class="driver-head">
+  <div><p>Poste chauffeur</p><h1>Mon bus en temps réel</h1><span>Comptage IR et position GPS du véhicule</span></div>
+  <div class="driver-actions"><span class="connection" [class.offline]="!realtime.connected()">{{ realtime.connected() ? 'Capteurs connectés' : 'Connexion capteurs…' }}</span><button type="button" (click)="auth.logout()">Déconnexion</button></div>
+</section>
+
+@if (data(); as bus) {
+  <section class="counter-card {{ loadState().tone }}" aria-live="polite">
+    <span>Passagers à bord</span>
+    <strong>{{ bus.passengers.passagers }}</strong>
+    <small>sur {{ bus.capacity }} places · {{ occupancy() }} %</small>
+    <div class="capacity"><i [style.width.%]="occupancy() > 100 ? 100 : occupancy()"></i></div>
+    <b>{{ loadState().label }}</b>
+  </section>
+
+  <section class="movement-grid">
+    <article class="entry"><span>Entrées</span><strong>+ {{ bus.passengers.entrees }}</strong><small>Capteur IR A → B</small></article>
+    <article class="exit"><span>Sorties</span><strong>− {{ bus.passengers.sorties }}</strong><small>Capteur IR B → A</small></article>
+    <article><span>Dernier passage</span><strong>{{ bus.passengers.dernierEvenement || 'Aucun' }}</strong><small>Détection automatique</small></article>
+  </section>
+
+  @if (vehicle(); as currentVehicle) {
+    <section class="vehicle-info">
+      <header><div><p>Véhicule affecté</p><h2>Bus {{ currentVehicle.busNumber }}</h2></div><span [class.gps-offline]="!bus.gps.fiable">{{ bus.gps.fiable ? 'GPS opérationnel' : 'GPS indisponible' }}</span></header>
+      <div class="vehicle-details">
+        <article><small>Immatriculation</small><strong>{{ currentVehicle.registration }}</strong></article>
+        <article><small>Ligne</small><strong>{{ currentVehicle.lineNumber || 'Non affectée' }} · {{ currentVehicle.lineName }}</strong></article>
+        <article><small>Capacité</small><strong>{{ currentVehicle.capacity }} places</strong></article>
+        <article><small>Vitesse</small><strong>{{ currentVehicle.speed }} km/h</strong></article>
+      </div>
+    </section>
+  }
+
+  <app-fleet-map [vehicles]="fleet.vehicles()" [currentBusId]="bus.busId" />
+} @else {
+  <section class="waiting">En attente des premières données ESP32…</section>
+}

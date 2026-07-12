@@ -1,0 +1,935 @@
+{
+  "projectName": "dakar-bus",
+  "createdAt": "2026-06-30T20:52:00.629Z",
+  "demo": {
+    "login": "dieng.tech",
+    "password": "dieng123",
+    "otpCode": "email ou SMS",
+    "startRoute": "/login"
+  },
+  "components": [
+    {
+      "name": "LoginPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/login/login.page.ts",
+      "role": "Page de connexion demo Angular Web avec mot de passe dieng123 ou OTP email/SMS."
+    },
+    {
+      "name": "DemoPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/demo/demo.page.ts",
+      "role": "Ecran de visualisation de tous les ecrans generes."
+    },
+    {
+      "name": "AlertesController",
+      "type": "backend",
+      "path": "backend/src/controllers/alertes.controller.js",
+      "role": "Controle les requetes HTTP pour alertes."
+    },
+    {
+      "name": "AlertesService",
+      "type": "backend",
+      "path": "backend/src/services/alertes.service.js",
+      "role": "Execute les operations CRUD SQL pour alertes."
+    },
+    {
+      "name": "BusController",
+      "type": "backend",
+      "path": "backend/src/controllers/bus.controller.js",
+      "role": "Controle les requetes HTTP pour bus."
+    },
+    {
+      "name": "BusService",
+      "type": "backend",
+      "path": "backend/src/services/bus.service.js",
+      "role": "Execute les operations CRUD SQL pour bus."
+    },
+    {
+      "name": "ComptagesPassagersController",
+      "type": "backend",
+      "path": "backend/src/controllers/comptages-passagers.controller.js",
+      "role": "Controle les requetes HTTP pour comptages_passagers."
+    },
+    {
+      "name": "ComptagesPassagersService",
+      "type": "backend",
+      "path": "backend/src/services/comptages-passagers.service.js",
+      "role": "Execute les operations CRUD SQL pour comptages_passagers."
+    },
+    {
+      "name": "LignesController",
+      "type": "backend",
+      "path": "backend/src/controllers/lignes.controller.js",
+      "role": "Controle les requetes HTTP pour lignes."
+    },
+    {
+      "name": "LignesService",
+      "type": "backend",
+      "path": "backend/src/services/lignes.service.js",
+      "role": "Execute les operations CRUD SQL pour lignes."
+    },
+    {
+      "name": "NotificationsController",
+      "type": "backend",
+      "path": "backend/src/controllers/notifications.controller.js",
+      "role": "Controle les requetes HTTP pour notifications."
+    },
+    {
+      "name": "NotificationsService",
+      "type": "backend",
+      "path": "backend/src/services/notifications.service.js",
+      "role": "Execute les operations CRUD SQL pour notifications."
+    },
+    {
+      "name": "PositionsGpsController",
+      "type": "backend",
+      "path": "backend/src/controllers/positions-gps.controller.js",
+      "role": "Controle les requetes HTTP pour positions_gps."
+    },
+    {
+      "name": "PositionsGpsService",
+      "type": "backend",
+      "path": "backend/src/services/positions-gps.service.js",
+      "role": "Execute les operations CRUD SQL pour positions_gps."
+    },
+    {
+      "name": "RolesController",
+      "type": "backend",
+      "path": "backend/src/controllers/roles.controller.js",
+      "role": "Controle les requetes HTTP pour roles."
+    },
+    {
+      "name": "RolesService",
+      "type": "backend",
+      "path": "backend/src/services/roles.service.js",
+      "role": "Execute les operations CRUD SQL pour roles."
+    },
+    {
+      "name": "StationsController",
+      "type": "backend",
+      "path": "backend/src/controllers/stations.controller.js",
+      "role": "Controle les requetes HTTP pour stations."
+    },
+    {
+      "name": "StationsService",
+      "type": "backend",
+      "path": "backend/src/services/stations.service.js",
+      "role": "Execute les operations CRUD SQL pour stations."
+    },
+    {
+      "name": "StationsLignesController",
+      "type": "backend",
+      "path": "backend/src/controllers/stations-lignes.controller.js",
+      "role": "Controle les requetes HTTP pour stations_lignes."
+    },
+    {
+      "name": "StationsLignesService",
+      "type": "backend",
+      "path": "backend/src/services/stations-lignes.service.js",
+      "role": "Execute les operations CRUD SQL pour stations_lignes."
+    },
+    {
+      "name": "StatutsAlertesController",
+      "type": "backend",
+      "path": "backend/src/controllers/statuts-alertes.controller.js",
+      "role": "Controle les requetes HTTP pour statuts_alertes."
+    },
+    {
+      "name": "StatutsAlertesService",
+      "type": "backend",
+      "path": "backend/src/services/statuts-alertes.service.js",
+      "role": "Execute les operations CRUD SQL pour statuts_alertes."
+    },
+    {
+      "name": "TrajetsController",
+      "type": "backend",
+      "path": "backend/src/controllers/trajets.controller.js",
+      "role": "Controle les requetes HTTP pour trajets."
+    },
+    {
+      "name": "TrajetsService",
+      "type": "backend",
+      "path": "backend/src/services/trajets.service.js",
+      "role": "Execute les operations CRUD SQL pour trajets."
+    },
+    {
+      "name": "TypesAlertesController",
+      "type": "backend",
+      "path": "backend/src/controllers/types-alertes.controller.js",
+      "role": "Controle les requetes HTTP pour types_alertes."
+    },
+    {
+      "name": "TypesAlertesService",
+      "type": "backend",
+      "path": "backend/src/services/types-alertes.service.js",
+      "role": "Execute les operations CRUD SQL pour types_alertes."
+    },
+    {
+      "name": "UtilisateursController",
+      "type": "backend",
+      "path": "backend/src/controllers/utilisateurs.controller.js",
+      "role": "Controle les requetes HTTP pour utilisateurs."
+    },
+    {
+      "name": "UtilisateursService",
+      "type": "backend",
+      "path": "backend/src/services/utilisateurs.service.js",
+      "role": "Execute les operations CRUD SQL pour utilisateurs."
+    },
+    {
+      "name": "VideosSurveillanceController",
+      "type": "backend",
+      "path": "backend/src/controllers/videos-surveillance.controller.js",
+      "role": "Controle les requetes HTTP pour videos_surveillance."
+    },
+    {
+      "name": "VideosSurveillanceService",
+      "type": "backend",
+      "path": "backend/src/services/videos-surveillance.service.js",
+      "role": "Execute les operations CRUD SQL pour videos_surveillance."
+    },
+    {
+      "name": "VueAlertesSurchargeController",
+      "type": "backend",
+      "path": "backend/src/controllers/vue-alertes-surcharge.controller.js",
+      "role": "Controle les requetes HTTP pour vue_alertes_surcharge."
+    },
+    {
+      "name": "VueAlertesSurchargeService",
+      "type": "backend",
+      "path": "backend/src/services/vue-alertes-surcharge.service.js",
+      "role": "Execute les operations CRUD SQL pour vue_alertes_surcharge."
+    },
+    {
+      "name": "VueBusTempsReelController",
+      "type": "backend",
+      "path": "backend/src/controllers/vue-bus-temps-reel.controller.js",
+      "role": "Controle les requetes HTTP pour vue_bus_temps_reel."
+    },
+    {
+      "name": "VueBusTempsReelService",
+      "type": "backend",
+      "path": "backend/src/services/vue-bus-temps-reel.service.js",
+      "role": "Execute les operations CRUD SQL pour vue_bus_temps_reel."
+    },
+    {
+      "name": "AlertesPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/alertes/alertes.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour alertes."
+    },
+    {
+      "name": "AlertesService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/alertes/alertes.service.ts",
+      "role": "Client API frontend pour alertes."
+    },
+    {
+      "name": "BusPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/bus/bus.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour bus."
+    },
+    {
+      "name": "BusService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/bus/bus.service.ts",
+      "role": "Client API frontend pour bus."
+    },
+    {
+      "name": "ComptagesPassagersPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/comptages-passagers/comptages-passagers.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour comptages_passagers."
+    },
+    {
+      "name": "ComptagesPassagersService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/comptages-passagers/comptages-passagers.service.ts",
+      "role": "Client API frontend pour comptages_passagers."
+    },
+    {
+      "name": "LignesPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/lignes/lignes.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour lignes."
+    },
+    {
+      "name": "LignesService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/lignes/lignes.service.ts",
+      "role": "Client API frontend pour lignes."
+    },
+    {
+      "name": "NotificationsPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/notifications/notifications.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour notifications."
+    },
+    {
+      "name": "NotificationsService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/notifications/notifications.service.ts",
+      "role": "Client API frontend pour notifications."
+    },
+    {
+      "name": "PositionsGpsPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/positions-gps/positions-gps.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour positions_gps."
+    },
+    {
+      "name": "PositionsGpsService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/positions-gps/positions-gps.service.ts",
+      "role": "Client API frontend pour positions_gps."
+    },
+    {
+      "name": "RolesPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/roles/roles.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour roles."
+    },
+    {
+      "name": "RolesService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/roles/roles.service.ts",
+      "role": "Client API frontend pour roles."
+    },
+    {
+      "name": "StationsPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/stations/stations.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour stations."
+    },
+    {
+      "name": "StationsService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/stations/stations.service.ts",
+      "role": "Client API frontend pour stations."
+    },
+    {
+      "name": "StationsLignesPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/stations-lignes/stations-lignes.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour stations_lignes."
+    },
+    {
+      "name": "StationsLignesService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/stations-lignes/stations-lignes.service.ts",
+      "role": "Client API frontend pour stations_lignes."
+    },
+    {
+      "name": "StatutsAlertesPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/statuts-alertes/statuts-alertes.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour statuts_alertes."
+    },
+    {
+      "name": "StatutsAlertesService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/statuts-alertes/statuts-alertes.service.ts",
+      "role": "Client API frontend pour statuts_alertes."
+    },
+    {
+      "name": "TrajetsPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/trajets/trajets.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour trajets."
+    },
+    {
+      "name": "TrajetsService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/trajets/trajets.service.ts",
+      "role": "Client API frontend pour trajets."
+    },
+    {
+      "name": "TypesAlertesPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/types-alertes/types-alertes.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour types_alertes."
+    },
+    {
+      "name": "TypesAlertesService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/types-alertes/types-alertes.service.ts",
+      "role": "Client API frontend pour types_alertes."
+    },
+    {
+      "name": "UtilisateursPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/utilisateurs/utilisateurs.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour utilisateurs."
+    },
+    {
+      "name": "UtilisateursService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/utilisateurs/utilisateurs.service.ts",
+      "role": "Client API frontend pour utilisateurs."
+    },
+    {
+      "name": "VideosSurveillancePage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/videos-surveillance/videos-surveillance.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour videos_surveillance."
+    },
+    {
+      "name": "VideosSurveillanceService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/videos-surveillance/videos-surveillance.service.ts",
+      "role": "Client API frontend pour videos_surveillance."
+    },
+    {
+      "name": "VueAlertesSurchargePage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/vue-alertes-surcharge/vue-alertes-surcharge.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour vue_alertes_surcharge."
+    },
+    {
+      "name": "VueAlertesSurchargeService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/vue-alertes-surcharge/vue-alertes-surcharge.service.ts",
+      "role": "Client API frontend pour vue_alertes_surcharge."
+    },
+    {
+      "name": "VueBusTempsReelPage",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/vue-bus-temps-reel/vue-bus-temps-reel.page.ts",
+      "role": "Ecran Angular Web de liste, creation, modification et suppression pour vue_bus_temps_reel."
+    },
+    {
+      "name": "VueBusTempsReelService",
+      "type": "frontend",
+      "path": "frontend/src/app/pages/vue-bus-temps-reel/vue-bus-temps-reel.service.ts",
+      "role": "Client API frontend pour vue_bus_temps_reel."
+    }
+  ],
+  "screens": [
+    {
+      "name": "Connexion",
+      "route": "/login",
+      "path": "frontend/src/app/pages/login/login.page.ts",
+      "description": "Connexion demo avec login dieng.tech, mot de passe dieng123 ou OTP envoye par email/SMS."
+    },
+    {
+      "name": "Demo",
+      "route": "/demo",
+      "path": "frontend/src/app/pages/demo/demo.page.ts",
+      "description": "Vue centrale pour ouvrir tous les ecrans generes."
+    },
+    {
+      "name": "Alertes",
+      "route": "/alertes",
+      "path": "frontend/src/app/pages/alertes/alertes.page.ts",
+      "description": "Ecran CRUD genere pour la table alertes."
+    },
+    {
+      "name": "Bus",
+      "route": "/bus",
+      "path": "frontend/src/app/pages/bus/bus.page.ts",
+      "description": "Ecran CRUD genere pour la table bus."
+    },
+    {
+      "name": "ComptagesPassagers",
+      "route": "/comptages-passagers",
+      "path": "frontend/src/app/pages/comptages-passagers/comptages-passagers.page.ts",
+      "description": "Ecran CRUD genere pour la table comptages_passagers."
+    },
+    {
+      "name": "Lignes",
+      "route": "/lignes",
+      "path": "frontend/src/app/pages/lignes/lignes.page.ts",
+      "description": "Ecran CRUD genere pour la table lignes."
+    },
+    {
+      "name": "Notifications",
+      "route": "/notifications",
+      "path": "frontend/src/app/pages/notifications/notifications.page.ts",
+      "description": "Ecran CRUD genere pour la table notifications."
+    },
+    {
+      "name": "PositionsGps",
+      "route": "/positions-gps",
+      "path": "frontend/src/app/pages/positions-gps/positions-gps.page.ts",
+      "description": "Ecran CRUD genere pour la table positions_gps."
+    },
+    {
+      "name": "Roles",
+      "route": "/roles",
+      "path": "frontend/src/app/pages/roles/roles.page.ts",
+      "description": "Ecran CRUD genere pour la table roles."
+    },
+    {
+      "name": "Stations",
+      "route": "/stations",
+      "path": "frontend/src/app/pages/stations/stations.page.ts",
+      "description": "Ecran CRUD genere pour la table stations."
+    },
+    {
+      "name": "StationsLignes",
+      "route": "/stations-lignes",
+      "path": "frontend/src/app/pages/stations-lignes/stations-lignes.page.ts",
+      "description": "Ecran CRUD genere pour la table stations_lignes."
+    },
+    {
+      "name": "StatutsAlertes",
+      "route": "/statuts-alertes",
+      "path": "frontend/src/app/pages/statuts-alertes/statuts-alertes.page.ts",
+      "description": "Ecran CRUD genere pour la table statuts_alertes."
+    },
+    {
+      "name": "Trajets",
+      "route": "/trajets",
+      "path": "frontend/src/app/pages/trajets/trajets.page.ts",
+      "description": "Ecran CRUD genere pour la table trajets."
+    },
+    {
+      "name": "TypesAlertes",
+      "route": "/types-alertes",
+      "path": "frontend/src/app/pages/types-alertes/types-alertes.page.ts",
+      "description": "Ecran CRUD genere pour la table types_alertes."
+    },
+    {
+      "name": "Utilisateurs",
+      "route": "/utilisateurs",
+      "path": "frontend/src/app/pages/utilisateurs/utilisateurs.page.ts",
+      "description": "Ecran CRUD genere pour la table utilisateurs."
+    },
+    {
+      "name": "VideosSurveillance",
+      "route": "/videos-surveillance",
+      "path": "frontend/src/app/pages/videos-surveillance/videos-surveillance.page.ts",
+      "description": "Ecran CRUD genere pour la table videos_surveillance."
+    },
+    {
+      "name": "VueAlertesSurcharge",
+      "route": "/vue-alertes-surcharge",
+      "path": "frontend/src/app/pages/vue-alertes-surcharge/vue-alertes-surcharge.page.ts",
+      "description": "Ecran CRUD genere pour la table vue_alertes_surcharge."
+    },
+    {
+      "name": "VueBusTempsReel",
+      "route": "/vue-bus-temps-reel",
+      "path": "frontend/src/app/pages/vue-bus-temps-reel/vue-bus-temps-reel.page.ts",
+      "description": "Ecran CRUD genere pour la table vue_bus_temps_reel."
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/health",
+      "description": "Verifier que le backend genere fonctionne."
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/request-otp",
+      "description": "Generer et envoyer un code OTP par email ou SMS."
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/verify-otp",
+      "description": "Verifier un code OTP envoye a un email ou telephone."
+    },
+    {
+      "method": "GET",
+      "path": "/api/alertes",
+      "description": "Lister les donnees de alertes."
+    },
+    {
+      "method": "GET",
+      "path": "/api/alertes/:id",
+      "description": "Lire un element alertes par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/alertes",
+      "description": "Creer un element alertes."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/alertes/:id",
+      "description": "Modifier un element alertes."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/alertes/:id",
+      "description": "Supprimer un element alertes."
+    },
+    {
+      "method": "GET",
+      "path": "/api/bus",
+      "description": "Lister les donnees de bus."
+    },
+    {
+      "method": "GET",
+      "path": "/api/bus/:id",
+      "description": "Lire un element bus par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/bus",
+      "description": "Creer un element bus."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/bus/:id",
+      "description": "Modifier un element bus."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/bus/:id",
+      "description": "Supprimer un element bus."
+    },
+    {
+      "method": "GET",
+      "path": "/api/comptages-passagers",
+      "description": "Lister les donnees de comptages_passagers."
+    },
+    {
+      "method": "GET",
+      "path": "/api/comptages-passagers/:id",
+      "description": "Lire un element comptages_passagers par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/comptages-passagers",
+      "description": "Creer un element comptages_passagers."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/comptages-passagers/:id",
+      "description": "Modifier un element comptages_passagers."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/comptages-passagers/:id",
+      "description": "Supprimer un element comptages_passagers."
+    },
+    {
+      "method": "GET",
+      "path": "/api/lignes",
+      "description": "Lister les donnees de lignes."
+    },
+    {
+      "method": "GET",
+      "path": "/api/lignes/:id",
+      "description": "Lire un element lignes par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/lignes",
+      "description": "Creer un element lignes."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/lignes/:id",
+      "description": "Modifier un element lignes."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/lignes/:id",
+      "description": "Supprimer un element lignes."
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "description": "Lister les donnees de notifications."
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications/:id",
+      "description": "Lire un element notifications par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/notifications",
+      "description": "Creer un element notifications."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notifications/:id",
+      "description": "Modifier un element notifications."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/notifications/:id",
+      "description": "Supprimer un element notifications."
+    },
+    {
+      "method": "GET",
+      "path": "/api/positions-gps",
+      "description": "Lister les donnees de positions_gps."
+    },
+    {
+      "method": "GET",
+      "path": "/api/positions-gps/:id",
+      "description": "Lire un element positions_gps par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/positions-gps",
+      "description": "Creer un element positions_gps."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/positions-gps/:id",
+      "description": "Modifier un element positions_gps."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/positions-gps/:id",
+      "description": "Supprimer un element positions_gps."
+    },
+    {
+      "method": "GET",
+      "path": "/api/roles",
+      "description": "Lister les donnees de roles."
+    },
+    {
+      "method": "GET",
+      "path": "/api/roles/:id",
+      "description": "Lire un element roles par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/roles",
+      "description": "Creer un element roles."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/roles/:id",
+      "description": "Modifier un element roles."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/roles/:id",
+      "description": "Supprimer un element roles."
+    },
+    {
+      "method": "GET",
+      "path": "/api/stations",
+      "description": "Lister les donnees de stations."
+    },
+    {
+      "method": "GET",
+      "path": "/api/stations/:id",
+      "description": "Lire un element stations par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/stations",
+      "description": "Creer un element stations."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/stations/:id",
+      "description": "Modifier un element stations."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/stations/:id",
+      "description": "Supprimer un element stations."
+    },
+    {
+      "method": "GET",
+      "path": "/api/stations-lignes",
+      "description": "Lister les donnees de stations_lignes."
+    },
+    {
+      "method": "GET",
+      "path": "/api/stations-lignes/:id",
+      "description": "Lire un element stations_lignes par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/stations-lignes",
+      "description": "Creer un element stations_lignes."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/stations-lignes/:id",
+      "description": "Modifier un element stations_lignes."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/stations-lignes/:id",
+      "description": "Supprimer un element stations_lignes."
+    },
+    {
+      "method": "GET",
+      "path": "/api/statuts-alertes",
+      "description": "Lister les donnees de statuts_alertes."
+    },
+    {
+      "method": "GET",
+      "path": "/api/statuts-alertes/:id",
+      "description": "Lire un element statuts_alertes par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/statuts-alertes",
+      "description": "Creer un element statuts_alertes."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/statuts-alertes/:id",
+      "description": "Modifier un element statuts_alertes."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/statuts-alertes/:id",
+      "description": "Supprimer un element statuts_alertes."
+    },
+    {
+      "method": "GET",
+      "path": "/api/trajets",
+      "description": "Lister les donnees de trajets."
+    },
+    {
+      "method": "GET",
+      "path": "/api/trajets/:id",
+      "description": "Lire un element trajets par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/trajets",
+      "description": "Creer un element trajets."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/trajets/:id",
+      "description": "Modifier un element trajets."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/trajets/:id",
+      "description": "Supprimer un element trajets."
+    },
+    {
+      "method": "GET",
+      "path": "/api/types-alertes",
+      "description": "Lister les donnees de types_alertes."
+    },
+    {
+      "method": "GET",
+      "path": "/api/types-alertes/:id",
+      "description": "Lire un element types_alertes par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/types-alertes",
+      "description": "Creer un element types_alertes."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/types-alertes/:id",
+      "description": "Modifier un element types_alertes."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/types-alertes/:id",
+      "description": "Supprimer un element types_alertes."
+    },
+    {
+      "method": "GET",
+      "path": "/api/utilisateurs",
+      "description": "Lister les donnees de utilisateurs."
+    },
+    {
+      "method": "GET",
+      "path": "/api/utilisateurs/:id",
+      "description": "Lire un element utilisateurs par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/utilisateurs",
+      "description": "Creer un element utilisateurs."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/utilisateurs/:id",
+      "description": "Modifier un element utilisateurs."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/utilisateurs/:id",
+      "description": "Supprimer un element utilisateurs."
+    },
+    {
+      "method": "GET",
+      "path": "/api/videos-surveillance",
+      "description": "Lister les donnees de videos_surveillance."
+    },
+    {
+      "method": "GET",
+      "path": "/api/videos-surveillance/:id",
+      "description": "Lire un element videos_surveillance par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/videos-surveillance",
+      "description": "Creer un element videos_surveillance."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/videos-surveillance/:id",
+      "description": "Modifier un element videos_surveillance."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/videos-surveillance/:id",
+      "description": "Supprimer un element videos_surveillance."
+    },
+    {
+      "method": "GET",
+      "path": "/api/vue-alertes-surcharge",
+      "description": "Lister les donnees de vue_alertes_surcharge."
+    },
+    {
+      "method": "GET",
+      "path": "/api/vue-alertes-surcharge/:id",
+      "description": "Lire un element vue_alertes_surcharge par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/vue-alertes-surcharge",
+      "description": "Creer un element vue_alertes_surcharge."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/vue-alertes-surcharge/:id",
+      "description": "Modifier un element vue_alertes_surcharge."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/vue-alertes-surcharge/:id",
+      "description": "Supprimer un element vue_alertes_surcharge."
+    },
+    {
+      "method": "GET",
+      "path": "/api/vue-bus-temps-reel",
+      "description": "Lister les donnees de vue_bus_temps_reel."
+    },
+    {
+      "method": "GET",
+      "path": "/api/vue-bus-temps-reel/:id",
+      "description": "Lire un element vue_bus_temps_reel par identifiant."
+    },
+    {
+      "method": "POST",
+      "path": "/api/vue-bus-temps-reel",
+      "description": "Creer un element vue_bus_temps_reel."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/vue-bus-temps-reel/:id",
+      "description": "Modifier un element vue_bus_temps_reel."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/vue-bus-temps-reel/:id",
+      "description": "Supprimer un element vue_bus_temps_reel."
+    }
+  ]
+}
