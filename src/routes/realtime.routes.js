@@ -1,7 +1,11 @@
 import { Router } from 'express';
-import { getTelemetry, resetPassengerCounter, telemetryEvents } from '../gps-reader.js';
+import { getConnectedGpsModules, getTelemetry, resetPassengerCounter, telemetryEvents } from '../gps-reader.js';
 
 const router = Router();
+
+router.get('/connected-gps-modules', (req, res) => {
+  res.json(getConnectedGpsModules());
+});
 
 router.post('/buses/:busId/reset-counter', (req, res) => {
   if (!resetPassengerCounter(req.params.busId)) {

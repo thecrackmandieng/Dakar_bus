@@ -47,3 +47,22 @@ export async function remove(req, res, next) {
     next(error);
   }
 }
+
+export async function activeAssignments(req, res, next) {
+  try {
+    res.json(await service.findActiveAssignments());
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function assign(req, res, next) {
+  try {
+    if (!req.body.idBus || !req.body.idLigne) {
+      return res.status(400).json({ message: 'Le bus et la ligne sont obligatoires.' });
+    }
+    res.status(201).json(await service.assignBusToLine(req.body.idBus, req.body.idLigne));
+  } catch (error) {
+    next(error);
+  }
+}

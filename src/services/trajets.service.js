@@ -1,4 +1,4 @@
-import { query } from '../db.js';
+import { pool, query } from '../db.js';
 
 const tableName = "trajets";
 const columns = [
@@ -114,4 +114,43 @@ export async function update(id, payload) {
 export async function remove(id) {
   await query(`DELETE FROM ${q(tableName)} WHERE ${q(primaryKey)} = $1`, [id]);
   return { deleted: true };
+}
+
+export async function findActiveAssignments() {
+  return query(
+    `SELECT t.id_trajet AS "idTrajet", t.id_bus AS "idBus", b.numero_bus AS "numeroBus",
+            b.immatriculation, t.id_ligne AS "idLigne", l.numero_ligne AS "numeroLigne",
+            l.nom_ligne AS "nomLigne", t.date_depart AS "dateDepart", t.statut_trajet AS "statutTrajet"
+     FROM trajets t
+     JOIN bus b ON b.id_bus = t.id_bus
+     JOIN lignes l ON l.id_ligne = t.id_ligne
+     WHERE LOWER(COALESCE(t.statut_trajet, '')) IN ('en cours', 'actif', 'en route')
+     ORDER BY b.numero_bus`
+  );
+}
+
+export async function assignBusToLine(idBus, idLigne) {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query(
+      `UPDATE trajets SET statut_trajet = 'Terminé', date_arrivee = COALESCE(date_arrivee, CURRENT_TIMESTAMP)
+       WHERE id_bus = $1 AND LOWER(COALESCE(statut_trajet, '')) IN ('en cours', 'actif', 'en route')`,
+      [idBus]
+    );
+    const result = await client.query(
+      `INSERT INTO trajets (id_bus, id_ligne, date_depart, statut_trajet)
+       VALUES ($1, $2, CURRENT_TIMESTAMP, 'En cours')
+       RETURNING id_trajet AS "idTrajet", id_bus AS "idBus", id_ligne AS "idLigne",
+                 date_depart AS "dateDepart", statut_trajet AS "statutTrajet"`,
+      [idBus, idLigne]
+    );
+    await client.query('COMMIT');
+    return result.rows[0];
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
 }

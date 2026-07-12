@@ -2,6 +2,7 @@ import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
 import { EventEmitter } from 'node:events';
 import { create as createGpsPosition } from './services/positions-gps.service.js';
+import { findBusIdByIdentifier } from './services/modules-gps.service.js';
 
 export const telemetryEvents = new EventEmitter();
 
@@ -11,9 +12,9 @@ const SERIAL_PORT_PATH =
 const SERIAL_BAUD_RATE = Number(
   process.env.ESP32_SERIAL_BAUD_RATE || 115200
 );
-const BUS_ID = process.env.BUS_ID?.trim() || 'BUS_NON_CONFIGURE';
+const CONFIGURED_BUS_ID = process.env.BUS_ID?.trim() || null;
+const CONFIGURED_MODULE_ID = process.env.GPS_MODULE_ID?.trim() || SERIAL_PORT_PATH;
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const HAS_VALID_BUS_ID = UUID_PATTERN.test(BUS_ID);
 const RAW_ACTIVE_TRIP_ID = process.env.ACTIVE_TRIP_ID?.trim();
 const ACTIVE_TRIP_ID = RAW_ACTIVE_TRIP_ID && UUID_PATTERN.test(RAW_ACTIVE_TRIP_ID) ? RAW_ACTIVE_TRIP_ID : null;
 const GPS_SAVE_INTERVAL_MS = Math.max(Number(process.env.GPS_SAVE_INTERVAL_MS) || 5000, 1000);
@@ -38,7 +39,7 @@ const passengerData = {
 
 export function getTelemetry() {
   return {
-    busId: BUS_ID,
+    busId: assignedBusId ?? `MODULE:${detectedModuleId}`,
     lineNumber: null,
     capacity: Number(process.env.BUS_CAPACITY || 50),
     gps: { ...gpsData },
@@ -47,8 +48,17 @@ export function getTelemetry() {
   };
 }
 
+export function getConnectedGpsModules() {
+  return serialPort.isOpen ? [{
+    identifiantModule: detectedModuleId,
+    portSerie: serialPort.path,
+    connecte: true,
+    idBus: assignedBusId
+  }] : [];
+}
+
 export function resetPassengerCounter(busId) {
-  if (busId !== BUS_ID) {
+  if (busId !== assignedBusId) {
     return false;
   }
 
@@ -73,6 +83,8 @@ function publishTelemetry() {
 
 let isReceivingBlock = false;
 let lastGpsSaveAt = 0;
+let assignedBusId = CONFIGURED_BUS_ID && UUID_PATTERN.test(CONFIGURED_BUS_ID) ? CONFIGURED_BUS_ID : null;
+let detectedModuleId = CONFIGURED_MODULE_ID;
 
 const serialPort = new SerialPort({
   path: SERIAL_PORT_PATH,
@@ -93,10 +105,20 @@ serialPort.on('open', () => {
   console.log(`Port     : ${serialPort.path}`);
   console.log(`Baud rate: ${SERIAL_BAUD_RATE}`);
   console.log('Réception GPS et comptage passagers...\n');
-  if (!HAS_VALID_BUS_ID) {
-    console.warn('BUS_ID absent ou invalide : les positions GPS ne seront pas enregistrées en base.');
-  }
+  console.log(`Module GPS : ${detectedModuleId}`);
+  void refreshAssignment();
+  void SerialPort.list().then((ports) => {
+    const connectedPort = ports.find(({ path }) => path === serialPort.path);
+    const hardwareIdentifier = connectedPort?.serialNumber?.trim();
+    if (hardwareIdentifier && hardwareIdentifier !== detectedModuleId) {
+      detectedModuleId = hardwareIdentifier;
+      console.log(`Identifiant matériel USB détecté : ${detectedModuleId}`);
+      void refreshAssignment();
+    }
+  }).catch((error) => console.error('Identification USB impossible :', error.message));
 });
+
+setInterval(() => void refreshAssignment(), 10000);
 
 parser.on('data', (line) => {
   const value = line.trim();
@@ -109,11 +131,11 @@ parser.on('data', (line) => {
     if (isReceivingBlock) {
       displayCurrentState();
       const now = Date.now();
-      const canSavePosition = HAS_VALID_BUS_ID && gpsData.fiable && Number.isFinite(gpsData.latitude) && Number.isFinite(gpsData.longitude) && now - lastGpsSaveAt >= GPS_SAVE_INTERVAL_MS;
+      const canSavePosition = assignedBusId !== null && gpsData.fiable && Number.isFinite(gpsData.latitude) && Number.isFinite(gpsData.longitude) && now - lastGpsSaveAt >= GPS_SAVE_INTERVAL_MS;
       if (canSavePosition) {
         lastGpsSaveAt = now;
         void createGpsPosition({
-          idBus: BUS_ID,
+          idBus: assignedBusId,
           idTrajet: ACTIVE_TRIP_ID,
           latitude: gpsData.latitude,
           longitude: gpsData.longitude,
@@ -177,6 +199,16 @@ parser.on('data', (line) => {
   const rawValue = rawValueParts.join(':').trim();
 
   switch (key) {
+    case 'id module':
+    case 'identifiant module':
+    case 'gps id':
+      if (rawValue && rawValue !== detectedModuleId) {
+        detectedModuleId = rawValue;
+        console.log(`Identifiant GPS détecté : ${detectedModuleId}`);
+        void refreshAssignment();
+      }
+      break;
+
     case 'latitude':
       gpsData.latitude = parseNumber(rawValue);
       gpsData.fiable = true;
@@ -338,4 +370,16 @@ function formatNumber(value, decimals) {
   return Number.isFinite(value)
     ? value.toFixed(decimals)
     : 'Indisponible';
+}
+
+async function refreshAssignment() {
+  try {
+    const databaseBusId = await findBusIdByIdentifier(detectedModuleId);
+    assignedBusId = databaseBusId ?? (CONFIGURED_BUS_ID && UUID_PATTERN.test(CONFIGURED_BUS_ID) ? CONFIGURED_BUS_ID : null);
+    if (!assignedBusId) {
+      console.warn(`Module GPS ${detectedModuleId} non affecté : positions non enregistrées.`);
+    }
+  } catch (error) {
+    console.error('Lecture de l’affectation GPS impossible :', error.message);
+  }
 }

@@ -19,6 +19,7 @@ import videosSurveillanceRoutes from './routes/videos-surveillance.routes.js';
 import vueAlertesSurchargeRoutes from './routes/vue-alertes-surcharge.routes.js';
 import vueBusTempsReelRoutes from './routes/vue-bus-temps-reel.routes.js';
 import realtimeRoutes from './routes/realtime.routes.js';
+import modulesGpsRoutes from './routes/modules-gps.routes.js';
 import './gps-reader.js';
 
 const app = express();
@@ -48,6 +49,7 @@ app.use('/api/videos-surveillance', videosSurveillanceRoutes);
 app.use('/api/vue-alertes-surcharge', vueAlertesSurchargeRoutes);
 app.use('/api/vue-bus-temps-reel', vueBusTempsReelRoutes);
 app.use('/api/realtime', realtimeRoutes);
+app.use('/api/modules-gps', modulesGpsRoutes);
 
 app.use((error, req, res, next) => {
   console.error(error);
