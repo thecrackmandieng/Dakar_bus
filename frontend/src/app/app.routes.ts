@@ -21,7 +21,7 @@ import { ChauffeurPage } from './pages/chauffeur/chauffeur.page';
 import { ParametresPage } from './pages/parametres/parametres.page';
 import { ModulesGpsPage } from './pages/modules-gps/modules-gps.page';
 import { AffectationsLignesPage } from './pages/affectations-lignes/affectations-lignes.page';
-import { adminGuard, authGuard, guestGuard } from './core/auth.guard';
+import { adminGuard, authGuard, guestGuard, settingsGuard } from './core/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -29,7 +29,7 @@ export const routes: Routes = [
   { path: 'chauffeur', component: ChauffeurPage, canActivate: [authGuard] },
   { path: 'dashboard', component: DemoPage, canActivate: [adminGuard] },
   { path: 'demo', redirectTo: 'dashboard' },
-  { path: 'parametres', component: ParametresPage, canActivate: [adminGuard] },
+  { path: 'parametres', component: ParametresPage, canActivate: [settingsGuard] },
   { path: 'modules-gps', component: ModulesGpsPage, canActivate: [adminGuard] },
   { path: 'affectations-lignes', component: AffectationsLignesPage, canActivate: [adminGuard] },
   { path: 'alertes', component: AlertesPage, canActivate: [adminGuard] },

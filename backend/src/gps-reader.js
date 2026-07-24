@@ -2,7 +2,7 @@ import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
 import { EventEmitter } from 'node:events';
 import { create as createGpsPosition } from './services/positions-gps.service.js';
-import { findBusIdByIdentifier } from './services/modules-gps.service.js';
+import { findBusAssignmentByIdentifier } from './services/modules-gps.service.js';
 
 export const telemetryEvents = new EventEmitter();
 
@@ -18,6 +18,7 @@ const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3
 const RAW_ACTIVE_TRIP_ID = process.env.ACTIVE_TRIP_ID?.trim();
 const ACTIVE_TRIP_ID = RAW_ACTIVE_TRIP_ID && UUID_PATTERN.test(RAW_ACTIVE_TRIP_ID) ? RAW_ACTIVE_TRIP_ID : null;
 const GPS_SAVE_INTERVAL_MS = Math.max(Number(process.env.GPS_SAVE_INTERVAL_MS) || 5000, 1000);
+const FALLBACK_BUS_CAPACITY = Math.max(Number(process.env.BUS_CAPACITY) || 50, 1);
 
 const gpsData = {
   latitude: null,
@@ -40,8 +41,8 @@ const passengerData = {
 export function getTelemetry() {
   return {
     busId: assignedBusId ?? `MODULE:${detectedModuleId}`,
-    lineNumber: null,
-    capacity: Number(process.env.BUS_CAPACITY || 50),
+    lineNumber: assignedLineNumber,
+    capacity: assignedCapacity,
     gps: { ...gpsData },
     passengers: { ...passengerData },
     updatedAt: new Date().toISOString()
@@ -84,6 +85,8 @@ function publishTelemetry() {
 let isReceivingBlock = false;
 let lastGpsSaveAt = 0;
 let assignedBusId = CONFIGURED_BUS_ID && UUID_PATTERN.test(CONFIGURED_BUS_ID) ? CONFIGURED_BUS_ID : null;
+let assignedCapacity = FALLBACK_BUS_CAPACITY;
+let assignedLineNumber = null;
 let detectedModuleId = CONFIGURED_MODULE_ID;
 
 const serialPort = new SerialPort({
@@ -374,10 +377,25 @@ function formatNumber(value, decimals) {
 
 async function refreshAssignment() {
   try {
-    const databaseBusId = await findBusIdByIdentifier(detectedModuleId);
-    assignedBusId = databaseBusId ?? (CONFIGURED_BUS_ID && UUID_PATTERN.test(CONFIGURED_BUS_ID) ? CONFIGURED_BUS_ID : null);
+    const previousBusId = assignedBusId;
+    const previousCapacity = assignedCapacity;
+    const previousLineNumber = assignedLineNumber;
+    const assignment = await findBusAssignmentByIdentifier(detectedModuleId);
+    assignedBusId = assignment?.idBus ?? (CONFIGURED_BUS_ID && UUID_PATTERN.test(CONFIGURED_BUS_ID) ? CONFIGURED_BUS_ID : null);
+    assignedCapacity = Number(assignment?.capaciteMax ?? FALLBACK_BUS_CAPACITY);
+    assignedLineNumber = assignment?.numeroLigne ?? null;
     if (!assignedBusId) {
       console.warn(`Module GPS ${detectedModuleId} non affecté : positions non enregistrées.`);
+    }
+    if (previousBusId !== assignedBusId || previousCapacity !== assignedCapacity || previousLineNumber !== assignedLineNumber) {
+      if (serialPort.isOpen) {
+        serialPort.write(`SET_CAPACITY:${assignedCapacity}\n`, (error) => {
+          if (error) {
+            console.error('Capacité non transmise à l’ESP32 :', error.message);
+          }
+        });
+      }
+      publishTelemetry();
     }
   } catch (error) {
     console.error('Lecture de l’affectation GPS impossible :', error.message);

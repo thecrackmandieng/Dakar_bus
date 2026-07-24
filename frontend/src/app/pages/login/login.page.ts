@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService, UserRole } from '../../core/auth.service';
+import { AuthService } from '../../core/auth.service';
 import { AlertSoundService } from '../../core/alert-sound.service';
 
 @Component({
@@ -13,15 +13,22 @@ import { AlertSoundService } from '../../core/alert-sound.service';
 })
 export class LoginPage {
   readonly form = new FormGroup({
-    role: new FormControl<UserRole>('admin', { nonNullable: true }),
-    login: new FormControl('dieng.tech', { nonNullable: true, validators: Validators.required }),
-    password: new FormControl('dieng123', { nonNullable: true, validators: Validators.required })
+    login: new FormControl('', { nonNullable: true, validators: Validators.required }),
+    password: new FormControl('', { nonNullable: true, validators: Validators.required })
   });
   readonly error = signal('');
+  readonly submitting = signal(false);
+  readonly submitLabel = computed(() => this.submitting() ? 'Connexion…' : 'Se connecter');
+  readonly passwordVisible = signal(false);
+  readonly passwordType = computed(() => this.passwordVisible() ? 'text' : 'password');
+  readonly passwordToggleLabel = computed(() => this.passwordVisible()
+    ? 'Masquer le mot de passe'
+    : 'Afficher le mot de passe'
+  );
 
   constructor(private readonly auth: AuthService, private readonly alertSound: AlertSoundService) {}
 
-  submit(): void {
+  async submit(): Promise<void> {
     this.error.set('');
     this.form.markAllAsTouched();
 
@@ -30,24 +37,24 @@ export class LoginPage {
       return;
     }
 
-    const { login, password, role } = this.form.getRawValue();
+    const { login, password } = this.form.getRawValue();
+    this.submitting.set(true);
 
-    const validIdentifier = role === 'admin'
-      ? login === 'dieng.tech'
-      : login.toLowerCase().includes('chauffeur');
-
-    if (validIdentifier && password === 'dieng123') {
-      this.alertSound.enable();
-      this.auth.login(login, role);
-      return;
+    try {
+      if (await this.auth.login(login, password)) {
+        this.alertSound.enable();
+        return;
+      }
+      this.error.set('Identifiant ou mot de passe incorrect.');
+    } catch {
+      this.error.set('Le service de connexion est momentanément indisponible.');
+    } finally {
+      this.submitting.set(false);
     }
-
-    this.error.set('Identifiant ou mot de passe incorrect.');
   }
 
-  selectRole(role: UserRole): void {
-    this.form.controls.role.setValue(role);
-    this.form.controls.login.setValue(role === 'admin' ? 'dieng.tech' : 'chauffeur');
-    this.error.set('');
+  // Gestionnaire dédié requis comme frontière entre l'événement du template et le Signal OnPush.
+  togglePasswordVisibility(): void {
+    this.passwordVisible.update(visible => !visible);
   }
 }

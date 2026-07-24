@@ -1,0 +1,41 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <div class="mobile-brand"><span class="brand-pin"><i></i></span><div><strong>DD<span>TRACK</span></strong><small>Bus Dakar en direct</small></div><span class="live-dot"><i></i>LIVE</span></div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <section class="search-zone">
+    <ion-searchbar mode="ios" placeholder="Bus, ligne ou destination" [debounce]="250" (ionInput)="setSearch($event)" aria-label="Rechercher un bus"></ion-searchbar>
+    <ion-select interface="popover" label="Ligne" [value]="selectedLine()" (ionChange)="setLine($event)"><ion-select-option value="all">Toutes les lignes</ion-select-option>@for(line of lines();track line.number){<ion-select-option [value]="line.number">{{line.number}} · {{line.name}}</ion-select-option>}</ion-select>
+    <div class="state-filters" aria-label="Filtrer par état">
+      <ion-chip [class.active]="selectedState()==='all'" (click)="setState('all')">Tous <ion-badge>{{counters().total}}</ion-badge></ion-chip>
+      <ion-chip class="available" [class.active]="selectedState()==='available'" (click)="setState('available')">Disponibles</ion-chip>
+      <ion-chip class="full" [class.active]="selectedState()==='full'" (click)="setState('full')">Pleins <ion-badge>{{counters().full}}</ion-badge></ion-chip>
+      <ion-chip class="overloaded" [class.active]="selectedState()==='overloaded'" (click)="setState('overloaded')">Surcharge <ion-badge>{{counters().overloaded}}</ion-badge></ion-chip>
+    </div>
+  </section>
+
+  @if(fleet.error()){<div class="network-alert"><span>!</span><div><strong>Connexion interrompue</strong><small>{{fleet.error()}}</small></div><ion-button fill="clear" size="small" (click)="fleet.refresh()">Réessayer</ion-button></div>}
+
+  <section class="map-view" [class.hidden]="activeView()!=='map'">
+    <div #mapContainer class="map"></div>
+    <div class="map-summary"><strong>{{filteredVehicles().length}}</strong><span>bus visibles</span></div>
+    @if(!fleet.loading()&&!filteredVehicles().length){<div class="empty-map"><span>⌁</span><strong>Aucun bus trouvé</strong><small>Modifiez vos filtres pour voir davantage de véhicules.</small></div>}
+  </section>
+
+  @if(activeView()==='list'){
+    <section class="bus-list">
+      <header><div><p>Résultats en direct</p><h1>{{filteredVehicles().length}} bus trouvés</h1></div><span>Actualisé automatiquement</span></header>
+      @for(vehicle of filteredVehicles();track vehicle.id){
+        <ion-card button (click)="selectedVehicleId.set(vehicle.id)" class="bus-card {{vehicle.state}}"><ion-card-content><div class="bus-card-head"><span class="bus-icon">▰</span><div><small>Ligne {{vehicle.lineNumber}}</small><strong>{{vehicle.busNumber}}</strong><span>{{vehicle.lineName}}</span></div><ion-badge>{{vehicle.stateLabel}}</ion-badge></div><div class="bus-card-foot"><span>{{vehicle.registration}}</span><span>{{vehicle.speed}} km/h</span><strong>{{vehicle.passengers}}/{{vehicle.capacity}} places</strong></div><ion-progress-bar [value]="vehicle.progress"></ion-progress-bar></ion-card-content></ion-card>
+      }
+    </section>
+  }
+
+  <ion-modal [isOpen]="selectedVehicle()!==null" [initialBreakpoint]="0.48" [breakpoints]="[0,0.48,0.75]" (didDismiss)="selectedVehicleId.set(null)">
+    <ng-template>@if(selectedVehicle();as vehicle){<ion-content class="detail-sheet"><div class="sheet-handle"></div><div class="detail-title"><span class="detail-bus">{{vehicle.lineNumber}}</span><div><small>Bus en circulation</small><h2>{{vehicle.busNumber}}</h2><p>{{vehicle.lineName}}</p></div><ion-badge class="{{vehicle.state}}">{{vehicle.stateLabel}}</ion-badge></div><div class="detail-stats"><article><small>Occupation en direct</small><strong>{{vehicle.passengers}} / {{vehicle.capacity}}</strong><span>{{vehicle.occupancy}} %</span></article><article><small>Vitesse</small><strong>{{vehicle.speed}} km/h</strong><span>En temps réel</span></article></div><ion-progress-bar [value]="vehicle.progress" class="detail-progress {{vehicle.state}}"></ion-progress-bar><div class="detail-registration"><span>Immatriculation</span><strong>{{vehicle.registration}}</strong></div><ion-button expand="block" shape="round" (click)="selectedVehicleId.set(null)">Retour à la carte</ion-button></ion-content>}</ng-template>
+  </ion-modal>
+</ion-content>
+
+<ion-footer class="ion-no-border"><nav><button type="button" [class.active]="activeView()==='map'" (click)="setView('map')"><span>⌖</span><strong>Carte</strong></button><button type="button" [class.active]="activeView()==='list'" (click)="setView('list')"><span>☷</span><strong>Bus</strong></button></nav></ion-footer>

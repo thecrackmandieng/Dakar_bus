@@ -9,6 +9,11 @@ constexpr int GPS_RX_PIN = 16;
 constexpr int GPS_TX_PIN = 17;
 constexpr int IR_SENSOR_A_PIN = 25;
 constexpr int IR_SENSOR_B_PIN = 26;
+// Brancher chaque LED avec une résistance de 220 à 330 ohms.
+constexpr int GREEN_LED_PIN = 27;
+constexpr int RED_LED_PIN = 32;
+// Utiliser un buzzer actif piloté via un transistor, pas directement par le GPIO.
+constexpr int BUZZER_PIN = 33;
 constexpr int IR_ACTIVE_STATE = LOW;
 
 constexpr unsigned long DISPLAY_INTERVAL_MS = 3000;
@@ -16,8 +21,11 @@ constexpr unsigned long SENSOR_DEBOUNCE_MS = 80;
 constexpr unsigned long PASSAGE_TIMEOUT_MS = 1500;
 constexpr unsigned long PASSAGE_RELEASE_MS = 250;
 constexpr unsigned long MAX_GPS_DATA_AGE_MS = 5000;
+constexpr unsigned long BUZZER_CYCLE_MS = 600;
+constexpr unsigned long BUZZER_ON_DURATION_MS = 320;
 constexpr uint32_t MIN_SATELLITES = 4;
 constexpr double MAX_HDOP = 8.0;
+constexpr int DEFAULT_BUS_CAPACITY = 50;
 
 enum class PassageState {
   IDLE,
@@ -44,6 +52,7 @@ unsigned long passageStartedAt = 0;
 unsigned long sensorsReleasedAt = 0;
 unsigned long lastDisplayAt = 0;
 int passengerCount = 0;
+int busCapacity = DEFAULT_BUS_CAPACITY;
 unsigned long totalEntries = 0;
 unsigned long totalExits = 0;
 
@@ -141,12 +150,29 @@ void processSerialCommands() {
         passageState = PassageState::IDLE;
         sensorsReleasedAt = 0;
         Serial.println("COMPTEUR RÉINITIALISÉ");
+      } else if (serialCommand.startsWith("SET_CAPACITY:")) {
+        const int receivedCapacity = serialCommand.substring(13).toInt();
+        if (receivedCapacity > 0) {
+          busCapacity = receivedCapacity;
+          Serial.print("CAPACITÉ MISE À JOUR : ");
+          Serial.println(busCapacity);
+        } else {
+          Serial.println("CAPACITÉ REJETÉE");
+        }
       }
       serialCommand = "";
     } else if (serialCommand.length() < 64) {
       serialCommand += character;
     }
   }
+}
+
+void updateLoadIndicators(unsigned long now) {
+  const bool overloaded = passengerCount > busCapacity;
+  const bool canTakePassengers = passengerCount < busCapacity;
+  digitalWrite(GREEN_LED_PIN, canTakePassengers ? HIGH : LOW);
+  digitalWrite(RED_LED_PIN, overloaded ? HIGH : LOW);
+  digitalWrite(BUZZER_PIN, overloaded && now % BUZZER_CYCLE_MS < BUZZER_ON_DURATION_MS ? HIGH : LOW);
 }
 
 void displayTelemetry(unsigned long now) {
@@ -167,6 +193,8 @@ void displayTelemetry(unsigned long now) {
   Serial.println(totalEntries);
   Serial.print("Total sorties : ");
   Serial.println(totalExits);
+  Serial.print("Capacité du bus : ");
+  Serial.println(busCapacity);
 
   if (!positionRecent || !gpsSignalAcceptable) {
     Serial.println("Position GPS non fiable");
@@ -213,6 +241,12 @@ void setup() {
   gpsSerial.begin(GPS_BAUD_RATE, SERIAL_8N1, GPS_RX_PIN, GPS_TX_PIN);
   pinMode(IR_SENSOR_A_PIN, INPUT_PULLUP);
   pinMode(IR_SENSOR_B_PIN, INPUT_PULLUP);
+  pinMode(GREEN_LED_PIN, OUTPUT);
+  pinMode(RED_LED_PIN, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
+  digitalWrite(GREEN_LED_PIN, HIGH);
+  digitalWrite(RED_LED_PIN, LOW);
+  digitalWrite(BUZZER_PIN, LOW);
 
   delay(600);
   const uint64_t chipId = ESP.getEfuseMac();
@@ -233,5 +267,6 @@ void loop() {
   const unsigned long now = millis();
   processSerialCommands();
   updatePassengerCounter(now);
+  updateLoadIndicators(now);
   displayTelemetry(now);
 }

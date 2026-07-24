@@ -1,7 +1,40 @@
 import nodemailer from 'nodemailer';
+import { query } from '../db.js';
 
 const otps = new Map();
 const OTP_TTL_MS = 5 * 60 * 1000;
+
+export async function authenticate(rawIdentifier, rawPassword) {
+  const identifier = String(rawIdentifier || '').trim().toLowerCase();
+  const password = String(rawPassword || '');
+
+  if (!identifier || !password) {
+    return null;
+  }
+
+  const rows = await query(
+    `SELECT
+      u.nom_complet AS "name",
+      CASE
+        WHEN u.id_role = 3 THEN 'conducteur'
+        WHEN LOWER(r.nom_role) = 'administrateur' THEN 'admin'
+        ELSE LOWER(r.nom_role)
+      END AS "role"
+    FROM utilisateurs u
+    INNER JOIN roles r ON r.id_role = u.id_role
+    WHERE u.actif = TRUE
+      AND (
+        LOWER(u.email) = $1
+        OR LOWER(u.telephone) = $1
+        OR LOWER(u.nom_complet) = $1
+      )
+      AND u.mot_de_passe = $2
+    LIMIT 1`,
+    [identifier, password]
+  );
+
+  return rows[0] || null;
+}
 
 function generateCode() {
   return String(Math.floor(100000 + Math.random() * 900000));

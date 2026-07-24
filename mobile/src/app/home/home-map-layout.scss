@@ -1,0 +1,44 @@
+ion-content::part(scroll) {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.search-zone,
+.network-alert {
+  flex: 0 0 auto;
+}
+
+.map-view {
+  height: auto;
+  min-height: 0;
+  flex: 1 1 0;
+}
+
+.map-view.hidden {
+  display: none;
+}
+
+.bus-list {
+  min-height: 0;
+  flex: 1 1 0;
+  overflow-y: auto;
+  padding-bottom: 24px;
+}
+
+.detail-progress {
+  height: 8px;
+  margin: 0 0 18px;
+  border-radius: 99px;
+  --background: #e8efee;
+  --progress-background: #10b981;
+}
+
+.detail-progress.full {
+  --progress-background: #f59e0b;
+}
+
+.detail-progress.overloaded {
+  --progress-background: #ef4444;
+}

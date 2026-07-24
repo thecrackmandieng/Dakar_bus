@@ -1,4 +1,4 @@
-.driver-actions{display:flex;align-items:center;gap:10px}.driver-actions button{min-height:38px;background:#fee2e2;color:#b91c1c}@media(max-width:760px){.driver-actions{width:100%;justify-content:space-between}}
+.driver-actions{display:flex;align-items:center;gap:10px}.driver-actions button{min-height:38px}.driver-actions .sound-button{background:#f1f5f5;color:#49696c}.driver-actions .sound-button.active{background:#d9f6f2;color:#08776f}.driver-actions .logout-button{background:#fee2e2;color:#b91c1c}@media(max-width:760px){.driver-actions{width:100%;flex-wrap:wrap}.driver-actions .connection{margin-right:auto}}
 
 .counter-card.full{border-color:#f59e0b;background:linear-gradient(180deg,#fffbeb,#fff)}
 .counter-card.full b{color:#b45309}

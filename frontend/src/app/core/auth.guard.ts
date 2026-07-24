@@ -15,6 +15,14 @@ export const adminGuard: CanActivateFn = () => {
   return auth.isDriver() ? inject(Router).createUrlTree(['/chauffeur']) : true;
 };
 
+export const settingsGuard: CanActivateFn = () => {
+  const auth = inject(AuthService);
+  if (!auth.isAuthenticated()) {
+    return inject(Router).createUrlTree(['/login']);
+  }
+  return auth.user()?.role === 'admin' ? true : inject(Router).createUrlTree(['/dashboard']);
+};
+
 export const guestGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
   if (!auth.isAuthenticated()) {

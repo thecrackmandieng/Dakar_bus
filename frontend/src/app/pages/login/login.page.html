@@ -30,27 +30,33 @@
         <p>Connectez-vous pour accéder à votre tableau de bord.</p>
       </div>
 
-      <div class="access-switch" aria-label="Choisir le type d’accès">
-        <button type="button" [class.active]="form.controls.role.value === 'admin'" (click)="selectRole('admin')">
-          <i class="admin-access" aria-hidden="true"></i>
-          <span><strong>Administrateur</strong><small>Supervision du réseau</small></span>
-        </button>
-        <button type="button" [class.active]="form.controls.role.value === 'chauffeur'" (click)="selectRole('chauffeur')">
-          <i class="driver-access" aria-hidden="true"></i>
-          <span><strong>Chauffeur</strong><small>Mon bus en direct</small></span>
-        </button>
-      </div>
-
       <label>
         <span>Identifiant</span>
         <div class="input-shell user-field">
-          <input formControlName="login" autocomplete="username" [placeholder]="form.controls.role.value === 'admin' ? 'Identifiant administrateur' : 'Identifiant chauffeur'">
+          <input formControlName="login" autocomplete="username" placeholder="Votre identifiant">
         </div>
       </label>
       <label>
         <span>Mot de passe</span>
         <div class="input-shell password-field">
-          <input formControlName="password" type="password" autocomplete="current-password" placeholder="Votre mot de passe">
+          <svg class="field-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="5" y="10" width="14" height="10" rx="2"></rect>
+            <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+          </svg>
+          <input formControlName="password" [type]="passwordType()" autocomplete="current-password" placeholder="Votre mot de passe">
+          <button
+            class="password-toggle"
+            type="button"
+            [attr.aria-label]="passwordToggleLabel()"
+            [attr.aria-pressed]="passwordVisible()"
+            (click)="togglePasswordVisibility()"
+          >
+            <svg class="eye-icon" [class.password-visible]="passwordVisible()" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6"></path>
+              <circle cx="12" cy="12" r="2.5"></circle>
+              <path class="eye-slash" d="M4 4l16 16"></path>
+            </svg>
+          </button>
         </div>
       </label>
 
@@ -58,8 +64,8 @@
         <div class="login-error" role="alert"><i>!</i>{{ error() }}</div>
       }
 
-      <button class="submit-button" type="submit" [disabled]="form.invalid">
-        <span>Se connecter</span><i aria-hidden="true">→</i>
+      <button class="submit-button" type="submit" [disabled]="form.invalid || submitting()">
+        <span>{{ submitLabel() }}</span><i aria-hidden="true">→</i>
       </button>
       <small class="secure-note"><i aria-hidden="true"></i>Connexion sécurisée · DDTrack Dakar</small>
     </form>

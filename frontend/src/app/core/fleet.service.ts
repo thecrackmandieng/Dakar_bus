@@ -47,7 +47,7 @@ export class FleetService implements OnDestroy {
       longitude: sensor.gps.longitude,
       speed: sensor.gps.vitesse ?? 0,
       passengers: sensor.passengers.passagers,
-      capacity: sensor.capacity,
+      capacity: assignedVehicle?.capacity ?? sensor.capacity,
       updatedAt: sensor.updatedAt
     };
     return [current, ...vehicles.filter(({ id, busNumber }) => id !== current.id && busNumber !== current.busNumber)];

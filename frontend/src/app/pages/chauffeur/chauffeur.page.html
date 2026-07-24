@@ -1,14 +1,14 @@
 <section class="driver-head">
-  <div><p>Poste chauffeur</p><h1>Mon bus en temps réel</h1><span>Comptage IR et position GPS du véhicule</span></div>
-  <div class="driver-actions"><span class="connection" [class.offline]="!realtime.connected()">{{ realtime.connected() ? 'Capteurs connectés' : 'Connexion capteurs…' }}</span><button type="button" (click)="auth.logout()">Déconnexion</button></div>
+  <div><p>Poste conducteur</p><h1>Mon bus en temps réel</h1><span>Comptage IR et position GPS du véhicule</span></div>
+  <div class="driver-actions"><span class="connection" [class.offline]="!realtime.connected()">{{ realtime.connected() ? 'Capteurs connectés' : 'Connexion capteurs…' }}</span><button type="button" class="sound-button" [class.active]="soundEnabled()" (click)="toggleAlertSound()">{{ soundButtonLabel() }}</button><button type="button" class="logout-button" (click)="auth.logout()">Déconnexion</button></div>
 </section>
 
 @if (data(); as bus) {
   <section class="counter-card {{ loadState().tone }}" aria-live="polite">
     <span>Passagers à bord</span>
     <strong>{{ bus.passengers.passagers }}</strong>
-    <small>sur {{ bus.capacity }} places · {{ occupancy() }} %</small>
-    <div class="capacity"><i [style.width.%]="occupancy() > 100 ? 100 : occupancy()"></i></div>
+    <small>sur {{ capacity() }} places · {{ occupancy() }} %</small>
+    <div class="capacity"><i [style.width.%]="occupancyProgress()"></i></div>
     <b>{{ loadState().label }}</b>
   </section>
 

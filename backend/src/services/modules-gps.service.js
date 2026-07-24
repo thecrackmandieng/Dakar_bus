@@ -30,12 +30,28 @@ export async function findAll() {
   return query(`${selectModule} ORDER BY m.created_at DESC`);
 }
 
-export async function findBusIdByIdentifier(identifier) {
+export async function findBusAssignmentByIdentifier(identifier) {
   const rows = await query(
-    'SELECT id_bus AS "idBus" FROM modules_gps WHERE identifiant_module = $1 AND actif = true LIMIT 1',
+    `SELECT m.id_bus AS "idBus",
+            b.capacite_max AS "capaciteMax",
+            active_trip.numero_ligne AS "numeroLigne"
+     FROM modules_gps m
+     JOIN bus b ON b.id_bus = m.id_bus AND b.actif = true
+     LEFT JOIN LATERAL (
+       SELECT l.numero_ligne
+       FROM trajets t
+       JOIN lignes l ON l.id_ligne = t.id_ligne
+       WHERE t.id_bus = m.id_bus
+       ORDER BY CASE WHEN LOWER(COALESCE(t.statut_trajet, '')) IN ('en cours', 'actif', 'en route') THEN 0 ELSE 1 END,
+                t.date_depart DESC NULLS LAST,
+                t.created_at DESC
+       LIMIT 1
+     ) active_trip ON true
+     WHERE m.identifiant_module = $1 AND m.actif = true
+     LIMIT 1`,
     [identifier]
   );
-  return rows[0]?.idBus ?? null;
+  return rows[0] ?? null;
 }
 
 export async function create(payload) {

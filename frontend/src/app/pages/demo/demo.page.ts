@@ -90,12 +90,17 @@ export class DemoPage {
 
       if (hasNewAlert) {
         this.alertSound.playOverload();
+      } else if (overloaded.length === 0) {
+        this.alertSound.stopOverload();
       }
     });
   }
 
   toggleAlertSound(): void {
     this.alertSound.toggle();
+    if (this.alertSound.enabled() && this.overloadAlerts().length > 0) {
+      this.alertSound.playOverload();
+    }
   }
 
   searchCounters(event: Event): void {

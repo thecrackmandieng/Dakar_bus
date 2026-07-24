@@ -13,7 +13,7 @@
     </div>
     <div class="sidebar-user">
       <span>{{ auth.user()?.name?.charAt(0)?.toUpperCase() }}</span>
-      <div><strong>{{ auth.user()?.name }}</strong><small>{{ auth.isDriver() ? 'Chauffeur' : 'Administrateur' }}</small></div>
+      <div><strong>{{ auth.user()?.name }}</strong><small>{{ auth.roleLabel() }}</small></div>
       <i aria-hidden="true"></i>
     </div>
     <div class="platform-summary">
@@ -23,7 +23,7 @@
     </div>
     <nav aria-label="Navigation">
       <small class="nav-title">Navigation</small>
-      @for (link of links; track link.path) {
+      @for (link of visibleLinks(); track link.path) {
         <a [routerLink]="link.path" routerLinkActive="active">
           <span class="nav-icon icon-{{ link.icon }}" aria-hidden="true"></span>
           <span class="nav-label">{{ link.label }}</span>

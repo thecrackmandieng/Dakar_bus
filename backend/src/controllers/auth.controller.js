@@ -1,5 +1,22 @@
 import * as service from '../services/auth.service.js';
 
+export async function login(req, res, next) {
+  try {
+    const user = await service.authenticate(
+      req.body.identifier,
+      req.body.password
+    );
+
+    if (!user) {
+      return res.status(401).json({ message: 'Identifiant ou mot de passe incorrect.' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function requestOtp(req, res, next) {
   try {
     res.json(await service.requestOtp(req.body.recipient));
